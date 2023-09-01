@@ -1,5 +1,5 @@
 import "./App.css";
-import Xirr from "./features/xirr/xirr";
+import Xirr from "./features/calculators/xirr/xirr";
 
 function App() {
     return (
