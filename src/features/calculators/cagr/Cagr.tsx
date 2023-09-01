@@ -63,15 +63,15 @@ export function CagrComp() {
     >(reducer, initialState);
 
     useEffect(() => {
-        let cagrCalculated =
+        const cagrCalculated =
             Math.pow(+futureValue / +presentValue, 1 / years) - 1;
 
         console.log(cagrCalculated);
 
-        cagrCalculated =
-            +futureValue > +presentValue
-                ? Math.abs(cagrCalculated)
-                : -cagrCalculated;
+        // cagrCalculated =
+        //     +futureValue > +presentValue
+        //         ? Math.abs(cagrCalculated)
+        //         : -1 * cagrCalculated;
 
         dispatch({ type: SET_CAGR, payload: cagrCalculated });
     }, [futureValue, presentValue, years]);
@@ -81,7 +81,10 @@ export function CagrComp() {
             <Card className="max-w-2xl flex-1">
                 <CardHeader>
                     <CardTitle>CAGR Calculator</CardTitle>
-                    <CardDescription>Card Description</CardDescription>
+                    <CardDescription>
+                        Calculate the Compound Annual Growth Rate (CAGR) of an
+                        investment
+                    </CardDescription>
                 </CardHeader>
                 <CardContent className="">
                     <form
@@ -90,40 +93,29 @@ export function CagrComp() {
                     >
                         <CagrFormField
                             label="Present Value"
-                            onChange={(e) =>
-                                dispatch({
-                                    type: SET_PRESENT_VALUE,
-                                    payload: +e.target.value,
-                                })
-                            }
+                            action={SET_PRESENT_VALUE}
+                            dispatch={dispatch}
                             val={presentValue}
                         />
 
                         <CagrFormField
                             label="Future Value"
-                            onChange={(e) =>
-                                dispatch({
-                                    type: SET_FUTURE_VALUE,
-                                    payload: +e.target.value,
-                                })
-                            }
+                            dispatch={dispatch}
+                            action={SET_FUTURE_VALUE}
                             val={futureValue}
                         />
 
                         <CagrFormField
                             label="Years"
-                            onChange={(e) =>
-                                dispatch({
-                                    type: SET_YEARS,
-                                    payload: +e.target.value,
-                                })
-                            }
+                            dispatch={dispatch}
+                            action={SET_YEARS}
                             val={years}
                         />
 
-                        <div className=" items-stretch justify-between flex">
+                        <div className=" items-stretch justify-between flex pt-5">
                             <p className=" bg-slate-900 flex justify-center items-center px-10 text-white rounded-md">
-                                CAGR {(cagr * 100).toFixed(2)}%
+                                CAGR {"  "}
+                                {(cagr * 100).toFixed(2)}%
                             </p>
                             <Button
                                 variant={"destructive"}
