@@ -6,9 +6,9 @@ import {
     MenubarItem,
     MenubarMenu,
     MenubarTrigger,
-} from "../ui/menubar";
+} from "@/components/ui/menubar";
 import { CALCULATORS } from "@/features/calculators/constants";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 function CalculatorLayout() {
     const { pathname } = useLocation();

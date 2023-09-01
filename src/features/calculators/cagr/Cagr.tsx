@@ -1,74 +1,42 @@
 import { useEffect, useReducer } from "react";
 
 import {
-    RESET,
-    SET_CAGR,
-    SET_FUTURE_VALUE,
-    SET_PRESENT_VALUE,
-    SET_YEARS,
-} from "./constants";
-
-import { Cagr, Reducer } from "types";
-import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
+
 import CagrFormField from "./CagrFormField";
 
-const initialState = {
-    presentValue: 1000,
-    futureValue: 1000,
-    years: 1,
-    cagr: 0,
-};
-
-type Action = {
-    type: string;
-    payload?: number;
-};
-
-const reducer = (state: Cagr, action: Action): Cagr => {
-    const type = action.type;
-    if (type === RESET) return { ...initialState };
-
-    const payload = action.payload ? +action.payload : 0;
-
-    if ((isNaN(payload) || payload <= 0) && type !== SET_CAGR) return state;
-
-    switch (type) {
-        case SET_PRESENT_VALUE:
-            return { ...state, presentValue: payload };
-
-        case SET_FUTURE_VALUE:
-            return { ...state, futureValue: payload };
-
-        case SET_YEARS:
-            return { ...state, years: payload };
-
-        case SET_CAGR:
-            return { ...state, cagr: payload };
-
-        default:
-            return state;
-    }
-};
+import {
+    initialState,
+    reducer as cagrReducer,
+    reset,
+    setCagr,
+    setFutureValue,
+    setPresentValue,
+    setYears,
+    cagrCalc,
+} from "./cagrUtils";
 
 export function CagrComp() {
-    const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer<
-        Reducer<Cagr, Action>
-    >(reducer, initialState);
+    // const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer<
+    //     Reducer<CagrState, CagrAction>
+    // >(cagrReducer, initialState);
+
+    const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer(
+        cagrReducer,
+        initialState,
+    );
 
     useEffect(() => {
-        const cagrCalculated =
-            Math.pow(+futureValue / +presentValue, 1 / years) - 1;
+        const cagrCalculated = cagrCalc(+presentValue, +futureValue, +years);
 
-        // console.log(cagrCalculated);
-
-        dispatch({ type: SET_CAGR, payload: cagrCalculated });
+        dispatch(setCagr(cagrCalculated));
     }, [futureValue, presentValue, years]);
 
     return (
@@ -88,22 +56,23 @@ export function CagrComp() {
                     >
                         <CagrFormField
                             label="Present Value"
-                            action={SET_PRESENT_VALUE}
-                            dispatch={dispatch}
+                            action={(val: number) =>
+                                dispatch(setPresentValue(val))
+                            }
                             val={presentValue}
                         />
 
                         <CagrFormField
                             label="Future Value"
-                            dispatch={dispatch}
-                            action={SET_FUTURE_VALUE}
+                            action={(val: number) =>
+                                dispatch(setFutureValue(val))
+                            }
                             val={futureValue}
                         />
 
                         <CagrFormField
                             label="Years"
-                            dispatch={dispatch}
-                            action={SET_YEARS}
+                            action={(val: number) => dispatch(setYears(val))}
                             val={years}
                         />
 
@@ -114,7 +83,7 @@ export function CagrComp() {
                             </p>
                             <Button
                                 variant={"destructive"}
-                                onClick={() => dispatch({ type: RESET })}
+                                onClick={() => dispatch(reset())}
                             >
                                 Reset
                             </Button>
