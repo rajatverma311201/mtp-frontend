@@ -8,12 +8,12 @@ function CalculatorsPage() {
                 <Link
                     to={calculator.path}
                     key={calculator.path}
-                    className="border border-solid w-56 p-4 rounded-md hover:shadow hover: hover:scale-110 transition"
+                    className="hover: w-56 rounded-md border border-solid p-4 transition hover:scale-110 hover:shadow"
                 >
                     <h2 className="text-xl font-semibold uppercase">
                         {calculator.name}
                     </h2>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm text-gray-600">
                         {calculator.description}
                     </p>
                 </Link>

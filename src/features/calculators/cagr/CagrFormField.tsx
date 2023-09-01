@@ -1,10 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+
 type Action = {
     type: string;
-    payload: number;
+    payload?: number;
 };
+
 type CagrFormFieldProps = {
     label: string;
     val: number;
@@ -20,8 +22,8 @@ const CagrFormField = ({
 }: CagrFormFieldProps) => {
     return (
         <>
-            <div className="flex flex-col gap-8 mb-10">
-                <div className=" flex gap-10 justify-between items-center">
+            <div className="mb-10 flex flex-col gap-8">
+                <div className="  flex items-center justify-between gap-10">
                     <Label
                         className="text-left text-lg"
                         htmlFor={label.split(/\s+/).join("-")}

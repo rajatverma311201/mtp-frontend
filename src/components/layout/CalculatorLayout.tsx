@@ -19,10 +19,10 @@ function CalculatorLayout() {
     );
     return (
         <div>
-            <div className=" flex justify-between">
+            <div className="flex justify-between">
                 <Link
                     to={"/calculators"}
-                    className="text-4xl font-bold text-left"
+                    className="text-left text-4xl font-bold"
                 >
                     Calculators
                 </Link>
@@ -56,7 +56,7 @@ const MoreBtn = ({ links }: { links: typeof CALCULATORS }) => {
                                     <Link
                                         key={calculator.path}
                                         to={calculator.path}
-                                        className="w-full h-full block cursor-pointer"
+                                        className="block h-full w-full cursor-pointer"
                                     >
                                         {calculator.name}
                                     </Link>

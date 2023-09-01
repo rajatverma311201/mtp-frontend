@@ -66,12 +66,7 @@ export function CagrComp() {
         const cagrCalculated =
             Math.pow(+futureValue / +presentValue, 1 / years) - 1;
 
-        console.log(cagrCalculated);
-
-        // cagrCalculated =
-        //     +futureValue > +presentValue
-        //         ? Math.abs(cagrCalculated)
-        //         : -1 * cagrCalculated;
+        // console.log(cagrCalculated);
 
         dispatch({ type: SET_CAGR, payload: cagrCalculated });
     }, [futureValue, presentValue, years]);
@@ -112,8 +107,8 @@ export function CagrComp() {
                             val={years}
                         />
 
-                        <div className=" items-stretch justify-between flex pt-5">
-                            <p className=" bg-slate-900 flex justify-center items-center px-10 text-white rounded-md">
+                        <div className="flex items-stretch justify-between pt-5 ">
+                            <p className="flex items-center justify-center rounded-md bg-slate-900 px-10 text-white">
                                 CAGR {"  "}
                                 {(cagr * 100).toFixed(2)}%
                             </p>
