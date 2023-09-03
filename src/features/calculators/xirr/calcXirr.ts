@@ -1,4 +1,12 @@
 import moment from "moment";
+
+/**
+ *
+ * @param values list of amounts
+ * @param dates list of dates
+ * @param guess guess value
+ * @returns xirr
+ */
 export default function XIRR(
     values: number[],
     dates: (moment.Moment | undefined)[],
