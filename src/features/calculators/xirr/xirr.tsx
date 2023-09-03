@@ -40,9 +40,9 @@ function Xirr() {
             });
 
             setXirr(+XIRR([...values, maturityAmt], convertedDates));
-            e.currentTarget.maturityAmt.value = "";
-            setMaturityDate(undefined);
         }
+        e.currentTarget.maturityAmt.value = "";
+        setMaturityDate(undefined);
     }
 
     return (
