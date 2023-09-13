@@ -1,48 +1,59 @@
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import XIRR from "./calcXirr";
 import moment from "moment";
+import {
+    initialState,
+    reducer,
+    setAmount,
+    setDate,
+    setDates,
+    setMaturityAmount,
+    setMaturityDate,
+    setValues,
+    setXirr,
+} from "./xirrUtils";
+
+import { DATE_FORMAT } from "./constants";
 
 function Xirr() {
-    console.log("rerender");
-    const [date, setDate] = useState<Date | undefined>();
-    const [maturityDate, setMaturityDate] = useState<Date | undefined>();
-    const [dates, setDates] = useState<Date[]>([]);
-    const [values, setValues] = useState<number[]>([]);
-    const [xirr, setXirr] = useState(0);
+    const [
+        { date, dates, amount, values, maturityAmount, maturityDate, xirr },
+        dispatch,
+    ] = useReducer(reducer, initialState);
 
     function handleAdd(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const amt = +e.currentTarget.amount.value;
-        console.log({ date, amt });
-        if (date && amt) {
-            setDates((d) => [...d, date]);
-            setValues((v) => [...v, amt]);
+        console.log({ date, amount });
+        if (date && amount) {
+            dispatch(setDates([...dates, date]));
+            dispatch(setValues([...values, +amount]));
         }
 
-        e.currentTarget.amount.value = "";
-        setDate(undefined);
+        dispatch(setAmount(""));
+        dispatch(setDate(undefined));
     }
 
     function calcXirr(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const maturityAmt = +e.currentTarget.maturityAmt.value;
 
-        if (maturityDate && maturityAmt) {
+        if (maturityDate && maturityAmount) {
             const convertedDates = [...dates, maturityDate].map((d) => {
                 const formattedDate = moment(d.toISOString()).format(
-                    "YYYY/MM/DD",
+                    DATE_FORMAT,
                 );
-                const convertedDate = moment(formattedDate, "YYYY/MM/DD");
+                const convertedDate = moment(formattedDate, DATE_FORMAT);
                 return convertedDate;
             });
 
-            setXirr(+XIRR([...values, maturityAmt], convertedDates));
-            e.currentTarget.maturityAmt.value = "";
-            setMaturityDate(undefined);
+            dispatch(
+                setXirr(+XIRR([...values, +maturityAmount], convertedDates)),
+            );
         }
+        dispatch(setMaturityAmount(""));
+        dispatch(setMaturityDate(undefined));
     }
 
     return (
@@ -52,20 +63,37 @@ function Xirr() {
             </h1>
             <form onSubmit={handleAdd}>
                 <div className="flex ">
-                    <Input type="number" name="amount" placeholder="Amount" />
-                    <DatePicker date={date} setDate={setDate} />
+                    <Input
+                        value={amount || ""}
+                        onChange={(e) => dispatch(setAmount(e.target.value))}
+                        type="number"
+                        name="amount"
+                        placeholder="Amount"
+                    />
+                    <DatePicker
+                        date={date}
+                        setDate={(d) => dispatch(setDate(d))}
+                    />
                 </div>
+
                 <Button>Submit</Button>
             </form>
             {JSON.stringify({ dates, values })}
             <form onSubmit={calcXirr}>
                 <div className="flex">
                     <Input
+                        value={maturityAmount || ""}
+                        onChange={(e) =>
+                            dispatch(setMaturityAmount(+e.target.value))
+                        }
                         type="number"
                         placeholder="Maturity Amount"
-                        name="maturityAmt"
+                        name="maturityAmount"
                     />
-                    <DatePicker date={maturityDate} setDate={setMaturityDate} />
+                    <DatePicker
+                        date={maturityDate}
+                        setDate={(d) => dispatch(setMaturityDate(d))}
+                    />
                 </div>
                 <Button>Calculate</Button>
             </form>

@@ -1,4 +1,4 @@
-import Xirr from "@/features/calculators/xirr/xirr";
+import Xirr from "@/features/calculators/xirr/Xirr";
 
 function XirrPage() {
     return (
