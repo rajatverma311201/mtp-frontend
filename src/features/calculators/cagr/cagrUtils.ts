@@ -1,10 +1,4 @@
-import {
-    RESET,
-    SET_CAGR,
-    SET_FUTURE_VALUE,
-    SET_PRESENT_VALUE,
-    SET_YEARS,
-} from "./constants";
+import { CAGR } from "@/utils/constants";
 
 /**
  * Calculates the CAGR (Compound Annual Growth Rate) value based on the present value, future value and number of years
@@ -36,48 +30,49 @@ export const initialState: CagrState = {
 };
 
 export const setYears = (years: number): CagrAction => ({
-    type: SET_YEARS,
+    type: CAGR.SET_YEARS,
     payload: years,
 });
 
 export const setPresentValue = (presentValue: number): CagrAction => ({
-    type: SET_PRESENT_VALUE,
+    type: CAGR.SET_PRESENT_VALUE,
     payload: presentValue,
 });
 
 export const setFutureValue = (futureValue: number): CagrAction => ({
-    type: SET_FUTURE_VALUE,
+    type: CAGR.SET_FUTURE_VALUE,
     payload: futureValue,
 });
 
 export const setCagr = (cagr: number): CagrAction => ({
-    type: SET_CAGR,
+    type: CAGR.SET_CAGR,
     payload: cagr,
 });
 
 export const reset = (): CagrAction => ({
-    type: RESET,
+    type: CAGR.RESET,
 });
 
 export const reducer = (state: CagrState, action: CagrAction): CagrState => {
     const type = action.type;
-    if (type === RESET) return { ...initialState };
+    if (type === CAGR.RESET) return { ...initialState };
 
     const payload = action.payload ? +action.payload : 0;
 
-    if ((isNaN(payload) || payload <= 0) && type !== SET_CAGR) return state;
+    if ((isNaN(payload) || payload <= 0) && type !== CAGR.SET_CAGR)
+        return state;
 
     switch (type) {
-        case SET_PRESENT_VALUE:
+        case CAGR.SET_PRESENT_VALUE:
             return { ...state, presentValue: payload };
 
-        case SET_FUTURE_VALUE:
+        case CAGR.SET_FUTURE_VALUE:
             return { ...state, futureValue: payload };
 
-        case SET_YEARS:
+        case CAGR.SET_YEARS:
             return { ...state, years: payload };
 
-        case SET_CAGR:
+        case CAGR.SET_CAGR:
             return { ...state, cagr: payload };
 
         default:

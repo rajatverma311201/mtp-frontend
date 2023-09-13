@@ -31,6 +31,11 @@ export default function useSignup() {
             authCtx.setJwt(data.token);
             authCtx.setJwtExpire(data.jwtExpire);
 
+            toast({
+                title: "Sign Up Successful",
+                variant: "success",
+            });
+
             navigate("/");
         },
 

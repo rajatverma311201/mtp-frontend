@@ -12,8 +12,8 @@ import {
     setPasswordConfirm,
 } from "./authUtil";
 import useSignup from "./useSignup";
-import { PASSWORD_REGEX, PASSWORD_TITLE } from "./constants";
 import { useToast } from "@/components/ui/use-toast";
+import { AUTH } from "@/utils/constants";
 
 function SignUpForm() {
     const [
@@ -72,8 +72,8 @@ function SignUpForm() {
             />
             <div className="flex flex-row gap-2">
                 <AuthFormField
-                    title={PASSWORD_TITLE}
-                    pattern={PASSWORD_REGEX}
+                    title={AUTH.PASSWORD_TITLE}
+                    pattern={AUTH.PASSWORD_REGEX}
                     req
                     type="password"
                     label="Password"
@@ -82,8 +82,8 @@ function SignUpForm() {
                 />
 
                 <AuthFormField
-                    title={PASSWORD_TITLE}
-                    pattern={PASSWORD_REGEX}
+                    title={AUTH.PASSWORD_TITLE}
+                    pattern={AUTH.PASSWORD_REGEX}
                     req
                     type="password"
                     label="Password Confirm"

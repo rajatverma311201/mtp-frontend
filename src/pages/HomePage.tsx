@@ -1,8 +1,11 @@
 import { Button, buttonVariants } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 import useAuthContext from "@/hooks/useAuthContext";
 import { Link } from "react-router-dom";
 
 function HomePage() {
+    const isLoggedIn = useAuth();
+
     return (
         <>
             <div>
@@ -14,22 +17,25 @@ function HomePage() {
                     >
                         Calculators
                     </Link>
-                    <Link
-                        className={buttonVariants({ variant: "outline" })}
-                        to="/login"
-                    >
-                        Login
-                    </Link>
-                    <Link
-                        className={buttonVariants({ variant: "outline" })}
-                        to="/signup"
-                    >
-                        Signup
-                    </Link>
+                    {!isLoggedIn && <>
+                        <Link
+                            className={buttonVariants({ variant: "outline" })}
+                            to="/login"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            className={buttonVariants({ variant: "outline" })}
+                            to="/signup"
+                        >
+                            Signup
+                        </Link>
+                    </>}
                 </div>
             </div>
             <UserDetails />
-            <Logout />
+
+            {isLoggedIn && <Logout />}
         </>
     );
 }
