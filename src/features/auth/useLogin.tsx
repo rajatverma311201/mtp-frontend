@@ -6,11 +6,12 @@ import Message from "@/components/Message";
 
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "@/hooks/useAuthContext";
+import { type AuthContextState } from "@/contexts/authContext";
 
 export default function useLogin() {
     const { toast } = useToast();
 
-    const authCtx = useAuthContext();
+    const authCtx: AuthContextState = useAuthContext();
 
     const navigate = useNavigate();
 

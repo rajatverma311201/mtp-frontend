@@ -1,9 +1,9 @@
-import Xirr from "@/features/calculators/xirr/Xirr";
+import XirrComponent from "@/features/calculators/xirr/XirrComponent";
 
 function XirrPage() {
     return (
         <>
-            <Xirr />
+            <XirrComponent />
         </>
     );
 }
