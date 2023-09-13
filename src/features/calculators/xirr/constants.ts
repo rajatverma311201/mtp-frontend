@@ -5,3 +5,4 @@ export const SET_VALUES = "SET_VALUES";
 export const SET_MATURITY_AMOUNT = "SET_MATURITY_AMOUNT";
 export const SET_MATURITY_DATE = "SET_MATURITY_DATE";
 export const SET_XIRR = "SET_XIRR";
+export const DATE_FORMAT = "DATE_FORMAT";

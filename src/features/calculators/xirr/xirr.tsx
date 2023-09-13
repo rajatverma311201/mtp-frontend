@@ -16,6 +16,8 @@ import {
     setXirr,
 } from "./xirrUtils";
 
+import { DATE_FORMAT } from "./constants";
+
 function Xirr() {
     const [
         { date, dates, amount, values, maturityAmount, maturityDate, xirr },
@@ -40,9 +42,9 @@ function Xirr() {
         if (maturityDate && maturityAmount) {
             const convertedDates = [...dates, maturityDate].map((d) => {
                 const formattedDate = moment(d.toISOString()).format(
-                    "YYYY/MM/DD",
+                    DATE_FORMAT,
                 );
-                const convertedDate = moment(formattedDate, "YYYY/MM/DD");
+                const convertedDate = moment(formattedDate, DATE_FORMAT);
                 return convertedDate;
             });
 
@@ -62,8 +64,8 @@ function Xirr() {
             <form onSubmit={handleAdd}>
                 <div className="flex ">
                     <Input
-                        value={amount}
-                        onChange={(e) => dispatch(setAmount(+e.target.value))}
+                        value={amount || ""}
+                        onChange={(e) => dispatch(setAmount(e.target.value))}
                         type="number"
                         name="amount"
                         placeholder="Amount"
@@ -80,6 +82,7 @@ function Xirr() {
             <form onSubmit={calcXirr}>
                 <div className="flex">
                     <Input
+                        value={maturityAmount || ""}
                         onChange={(e) =>
                             dispatch(setMaturityAmount(+e.target.value))
                         }

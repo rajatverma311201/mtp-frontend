@@ -23,7 +23,7 @@ import {
     cagrCalc,
 } from "./cagrUtils";
 
-export function CagrComp() {
+function CagrComp() {
     // const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer<
     //     Reducer<CagrState, CagrAction>
     // >(cagrReducer, initialState);

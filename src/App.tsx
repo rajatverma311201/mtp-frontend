@@ -1,21 +1,40 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { CagrPage, CalculatorsPage, HomePage, XirrPage } from "@/pages";
+import {
+    CagrPage,
+    CalculatorsPage,
+    HomePage,
+    LoginPage,
+    SignUpPage,
+    XirrPage,
+} from "@/pages";
 import CalculatorLayout from "@/components/layout/CalculatorLayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "./components/ui/toaster";
+
+const queryClient = new QueryClient();
 
 function App() {
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/calculators" element={<CalculatorLayout />}>
-                        <Route index element={<CalculatorsPage />} />
-                        <Route path="cagr" element={<CagrPage />} />
-                        <Route path="xirr" element={<XirrPage />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <Toaster />
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route
+                            path="/calculators"
+                            element={<CalculatorLayout />}
+                        >
+                            <Route index element={<CalculatorsPage />} />
+                            <Route path="cagr" element={<CagrPage />} />
+                            <Route path="xirr" element={<XirrPage />} />
+                        </Route>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/signup" element={<SignUpPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </QueryClientProvider>
         </>
     );
 }
