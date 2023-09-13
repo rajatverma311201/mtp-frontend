@@ -1,5 +1,6 @@
 import Message from "@/components/Message";
 import { useToast } from "@/components/ui/use-toast";
+import { type AuthContextState } from "@/contexts/authContext";
 import useAuthContext from "@/hooks/useAuthContext";
 import { Auth } from "@/services/api";
 
@@ -12,7 +13,7 @@ export default function useSignup() {
 
     const navigate = useNavigate();
 
-    const authCtx = useAuthContext();
+    const authCtx: AuthContextState = useAuthContext();
 
     const { mutate: signup, isLoading } = useMutation({
         mutationFn: ({
