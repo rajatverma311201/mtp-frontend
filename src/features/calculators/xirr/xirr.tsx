@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import React, { useReducer } from "react";
-import XIRR from "./calcXirr";
+import calculateXirr from "./calculateXirr";
 import moment from "moment";
 import {
     initialState,
@@ -15,8 +15,7 @@ import {
     setValues,
     setXirr,
 } from "./xirrUtils";
-
-import { DATE_FORMAT } from "./constants";
+import { XIRR } from "@/utils/constants";
 
 function Xirr() {
     const [
@@ -42,14 +41,19 @@ function Xirr() {
         if (maturityDate && maturityAmount) {
             const convertedDates = [...dates, maturityDate].map((d) => {
                 const formattedDate = moment(d.toISOString()).format(
-                    DATE_FORMAT,
+                    XIRR.DATE_FORMAT,
                 );
-                const convertedDate = moment(formattedDate, DATE_FORMAT);
+                const convertedDate = moment(formattedDate, XIRR.DATE_FORMAT);
                 return convertedDate;
             });
 
             dispatch(
-                setXirr(+XIRR([...values, +maturityAmount], convertedDates)),
+                setXirr(
+                    +calculateXirr(
+                        [...values, +maturityAmount],
+                        convertedDates,
+                    ),
+                ),
             );
         }
         dispatch(setMaturityAmount(""));

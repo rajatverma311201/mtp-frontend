@@ -3,7 +3,7 @@ import AuthFormField from "./AuthFormField";
 import { Button } from "@/components/ui/button";
 
 import useLogin from "./useLogin";
-import { PASSWORD_REGEX, PASSWORD_TITLE } from "./constants";
+import { AUTH } from "@/utils/constants";
 
 function LoginForm() {
     const [email, setEmail] = useState("");
@@ -26,9 +26,10 @@ function LoginForm() {
                 val={email}
                 action={(v) => setEmail(v)}
             />
+            
             <AuthFormField
-                title={PASSWORD_TITLE}
-                pattern={PASSWORD_REGEX}
+                title={AUTH.PASSWORD_TITLE}
+                pattern={AUTH.PASSWORD_REGEX}
                 req
                 type="password"
                 label="Password"

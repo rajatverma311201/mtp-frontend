@@ -34,6 +34,7 @@ export const Auth = {
         const data = await res.json();
         if (!res.ok) {
             if (data.message) {
+                console.log(data);
                 throw new Error(data.message);
             }
             throw new Error("Something went wrong!");

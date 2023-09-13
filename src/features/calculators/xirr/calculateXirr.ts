@@ -13,7 +13,7 @@ const iterMax = 50;
  * @param guess guess value
  * @returns xirr
  */
-export default function XIRR(
+export default function calculateXirr(
     values: number[],
     dates: (moment.Moment | undefined)[],
     guess = 0.1,

@@ -25,6 +25,10 @@ export default function useLogin() {
             authCtx.setJwt(data.token);
             authCtx.setJwtExpire(data.jwtExpire);
 
+            toast({
+                title: "Logged In Successfully",
+                variant: "success",
+            });
             navigate("/");
         },
         onError: ({ message }: { message: string }) => {
