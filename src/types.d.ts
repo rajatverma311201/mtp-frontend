@@ -16,4 +16,9 @@ declare module "types" {
         email: string;
         password: string;
     };
+
+    export type XirrTransaction = {
+        amount: string | number;
+        date: Date;
+    };
 }

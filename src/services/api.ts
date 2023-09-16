@@ -1,44 +1,47 @@
-import { LoginRequest, SignUpRequest } from "types";
+import { LoginRequest, SignUpRequest, XirrTransaction } from "types";
+import Fetch from "./Fetch";
+import { HTTP } from "@/utils/constants";
 
-const BASE_URL = "http://127.0.0.1:3000/api";
 export const Auth = {
     signup: async (obj: SignUpRequest) => {
-        const res = await fetch(`${BASE_URL}/auth/signup`, {
-            method: "POST",
-            body: JSON.stringify(obj),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-            if (data.message) {
-                throw new Error(data.message);
-            }
-            throw new Error("Something went wrong!");
-        }
+        const data = await Fetch(
+            `/auth/signup`,
+            HTTP.POST,
+            "",
+            JSON.stringify(obj),
+        );
 
         return data;
     },
     login: async (obj: LoginRequest) => {
-        console.log(obj);
-        const res = await fetch(`${BASE_URL}/auth/login`, {
-            method: "POST",
-            body: JSON.stringify(obj),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const data = await Fetch(
+            `/auth/login`,
+            HTTP.POST,
+            "",
+            JSON.stringify(obj),
+        );
 
-        const data = await res.json();
-        if (!res.ok) {
-            if (data.message) {
-                console.log(data);
-                throw new Error(data.message);
-            }
-            throw new Error("Something went wrong!");
-        }
+        return data;
+    },
+};
+
+export const Calculator = {
+    getXirrInvestments: async (jwt: string) => {
+        const data = await Fetch(`/xirrs`, HTTP.GET, jwt);
+        return data;
+    },
+
+    addXirrInvestments: async (
+        { amount, date }: XirrTransaction,
+        jwt: string,
+    ) => {
+        const body = { amount, date };
+        const data = await Fetch(
+            `/xirrs`,
+            HTTP.POST,
+            jwt,
+            JSON.stringify(body),
+        );
 
         return data;
     },

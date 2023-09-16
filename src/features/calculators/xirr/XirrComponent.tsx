@@ -16,8 +16,11 @@ import {
     setXirr,
 } from "./xirrUtils";
 import { XIRR } from "@/utils/constants";
+import useAddInvestment from "./useAddInvestment";
 
 function Xirr() {
+    const { addInvestment, isLoading } = useAddInvestment();
+
     const [
         { date, dates, amount, values, maturityAmount, maturityDate, xirr },
         dispatch,
@@ -25,10 +28,10 @@ function Xirr() {
 
     function handleAdd(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log({ date, amount });
         if (date && amount) {
             dispatch(setDates([...dates, date]));
             dispatch(setValues([...values, +amount]));
+            addInvestment({ amount, date: date as Date });
         }
 
         dispatch(setAmount(""));
@@ -80,9 +83,8 @@ function Xirr() {
                     />
                 </div>
 
-                <Button>Submit</Button>
+                <Button disabled={isLoading}>Submit</Button>
             </form>
-            {JSON.stringify({ dates, values })}
             <form onSubmit={calcXirr}>
                 <div className="flex">
                     <Input
