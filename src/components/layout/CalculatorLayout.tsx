@@ -25,6 +25,9 @@ function CalculatorLayout() {
                 >
                     Calculators
                 </Link>
+                <Link to={"/"} className="text-left text-4xl font-bold">
+                    Home
+                </Link>
                 {pathname !== "/calculators" && (
                     <MoreBtn links={availableCalculators} />
                 )}
