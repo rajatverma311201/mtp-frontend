@@ -12,7 +12,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 function CalculatorLayout() {
     const { pathname } = useLocation();
-    console.log(pathname);
 
     const availableCalculators = CALCULATORS.filter(
         (calculator) => !pathname.endsWith(calculator.path),

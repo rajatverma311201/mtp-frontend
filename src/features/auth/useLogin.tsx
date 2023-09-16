@@ -20,8 +20,6 @@ export default function useLogin() {
             Auth.login({ email, password }),
 
         onSuccess: (data) => {
-            console.log(data);
-
             authCtx.setUser(data.data);
             authCtx.setJwt(data.token);
             authCtx.setJwtExpire(data.jwtExpire);
