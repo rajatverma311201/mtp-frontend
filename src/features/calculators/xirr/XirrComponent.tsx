@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import calculateXirr from "./calculateXirr";
 import moment from "moment";
 import {
@@ -17,21 +17,59 @@ import {
 } from "./xirrUtils";
 import { XIRR } from "@/utils/constants";
 import useAddInvestment from "./useAddInvestment";
+import { useQuery } from "@tanstack/react-query";
+import { Calculator } from "@/services/api";
+import { XirrTransaction } from "types";
+import InvestmentTable from "./InvestmentTable";
+import { useAuthContext } from "@/hooks";
 
 function Xirr() {
     const { addInvestment, isLoading } = useAddInvestment();
+
+    const authCtx = useAuthContext();
+    const jwt = authCtx.jwt;
+
+    const { data } = useQuery({
+        queryKey: ["fetch-xirr"],
+        queryFn: () => Calculator.getXirrInvestments(jwt),
+        enabled: !!jwt,
+    });
 
     const [
         { date, dates, amount, values, maturityAmount, maturityDate, xirr },
         dispatch,
     ] = useReducer(reducer, initialState);
 
+    useEffect(() => {
+        if (data && jwt) {
+            const _dates: Date[] = [];
+            const _values: number[] = [];
+
+            data.data.forEach((item: XirrTransaction) => {
+                _dates.push(new Date(item.date));
+                _values.push(+item.amount);
+            });
+
+            dispatch(setDates(_dates));
+            dispatch(setValues(_values));
+        }
+    }, [data, jwt]);
+
+    // useEffect(() => {
+    //     console.log({ dates });
+    // }, [dates]);
+
     function handleAdd(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (date && amount) {
-            dispatch(setDates([...dates, date]));
-            dispatch(setValues([...values, +amount]));
-            addInvestment({ amount, date: date as Date });
+            // console.log({ date, amount });
+
+            if (!jwt) {
+                dispatch(setDates([...dates, date]));
+                dispatch(setValues([...values, +amount]));
+            } else {
+                addInvestment({ amount: +amount, date: date as Date });
+            }
         }
 
         dispatch(setAmount(""));
@@ -59,8 +97,6 @@ function Xirr() {
                 ),
             );
         }
-        dispatch(setMaturityAmount(""));
-        dispatch(setMaturityDate(undefined));
     }
 
     return (
@@ -104,6 +140,7 @@ function Xirr() {
                 <Button>Calculate</Button>
             </form>
             {(xirr * 100).toFixed(2)}%
+            {<InvestmentTable dates={dates} values={values} />}
         </>
     );
 }

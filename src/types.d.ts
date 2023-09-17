@@ -18,7 +18,7 @@ declare module "types" {
     };
 
     export type XirrTransaction = {
-        amount: string | number;
-        date: Date;
+        amount: number;
+        date: Date | string;
     };
 }

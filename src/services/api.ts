@@ -35,10 +35,24 @@ export const Calculator = {
         { amount, date }: XirrTransaction,
         jwt: string,
     ) => {
-        const body = { amount, date };
+        const body = { amount, date: date.toString() };
+
+        console.log(body);
         const data = await Fetch(
             `/xirrs`,
             HTTP.POST,
+            jwt,
+            JSON.stringify(body),
+        );
+
+        return data;
+    },
+
+    deleteXirrInvestment: async (date: Date, jwt: string) => {
+        const body = { date };
+        const data = await Fetch(
+            `/xirrs`,
+            HTTP.DELETE,
             jwt,
             JSON.stringify(body),
         );
