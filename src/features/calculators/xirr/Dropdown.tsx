@@ -6,11 +6,21 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function Dropdown() {
+type XirrDropdownType = {
+    name: string;
+    action: () => void;
+};
+
+function Dropdown({ dropdownItems }: { dropdownItems: XirrDropdownType[] }) {
+    const dropdownMenuItems = dropdownItems.map((item) => (
+        <DropdownMenuItem onClick={() => item.action()}>
+            {item.name}
+        </DropdownMenuItem>
+    ));
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -21,14 +31,7 @@ function Dropdown() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem
-                    onClick={() => navigator.clipboard.writeText("")}
-                >
-                    Copy payment ID
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>View customer</DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
+                {dropdownMenuItems}
             </DropdownMenuContent>
         </DropdownMenu>
     );

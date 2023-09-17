@@ -1,15 +1,16 @@
 import { DataTable } from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { XirrTransaction } from "types";
-import Dropdown from "./Dropdown";
+import { FiEdit } from "react-icons/fi";
+import { HiOutlineTrash } from "react-icons/hi2";
+import useDeleteInvestment from "./useDeleteInvestment";
 
-const columns: ColumnDef<XirrTransaction>[] = [
-    {
-        id: "actions",
-        cell: ({ row }) => {
-            return <Dropdown />;
-        },
-    },
+type ExtendedXirrTransaction = XirrTransaction & {
+    action: () => void;
+    isDeleting: boolean;
+};
+
+const columns: ColumnDef<ExtendedXirrTransaction>[] = [
     {
         accessorKey: "amount",
         header: "Amount",
@@ -27,6 +28,30 @@ const columns: ColumnDef<XirrTransaction>[] = [
     {
         accessorKey: "date",
         header: "Date",
+        cell: ({ row }) => <p> {(row.getValue("date") as Date).toString()}</p>,
+    },
+    {
+        id: "actions",
+        cell: ({ row }) => {
+            const payment = row.original;
+            return (
+                <>
+                    <div className="flex gap-5 text-lg">
+                        <FiEdit
+                            className="cursor-pointer"
+                            onClick={() => {
+                                alert("edit");
+                            }}
+                        />
+                        <HiOutlineTrash
+                            disabled={payment.isDeleting}
+                            className="cursor-pointer"
+                            onClick={payment.action}
+                        />
+                    </div>
+                </>
+            );
+        },
     },
 ];
 
@@ -36,15 +61,20 @@ type InvestmentTablePropTypes = {
 };
 
 function InvestmentTable({ dates, values }: InvestmentTablePropTypes) {
+    const { deleteInvestment, isDeleting } = useDeleteInvestment();
+
+    // console.log(dates);
     if (dates.length == 0) {
         return null;
     }
 
-    const data: XirrTransaction[] = [];
+    const data: ExtendedXirrTransaction[] = [];
 
     for (let i = 0; i < dates.length; i++) {
         data.push({
-            date: dates[i].toLocaleDateString("en-GB"),
+            isDeleting,
+            action: () => deleteInvestment(dates[i]),
+            date: dates[i],
             amount: values[i],
         });
     }

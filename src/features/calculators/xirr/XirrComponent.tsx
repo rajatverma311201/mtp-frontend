@@ -20,8 +20,8 @@ import useAddInvestment from "./useAddInvestment";
 import { useQuery } from "@tanstack/react-query";
 import { Calculator } from "@/services/api";
 import { XirrTransaction } from "types";
-import useAuthContext from "@/hooks/useAuthContext";
 import InvestmentTable from "./InvestmentTable";
+import { useAuthContext } from "@/hooks";
 
 function Xirr() {
     const { addInvestment, isLoading } = useAddInvestment();
@@ -55,9 +55,15 @@ function Xirr() {
         }
     }, [data, jwt]);
 
+    // useEffect(() => {
+    //     console.log({ dates });
+    // }, [dates]);
+
     function handleAdd(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (date && amount) {
+            // console.log({ date, amount });
+
             if (!jwt) {
                 dispatch(setDates([...dates, date]));
                 dispatch(setValues([...values, +amount]));
