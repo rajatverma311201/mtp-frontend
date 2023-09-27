@@ -23,6 +23,7 @@ import { XirrTransaction } from "types";
 import InvestmentTable from "./InvestmentTable";
 import { useAuthContext } from "@/hooks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ModeToggle } from "@/components/ModeToggle";
 
 function Xirr() {
     const { addInvestment, isLoading } = useAddInvestment();
@@ -96,13 +97,14 @@ function Xirr() {
 
     return (
         <>
-            <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
+            <h1 className="text-3xl font-bold text-foreground sm:text-3xl md:text-4xl">
                 XIRR Calculator
             </h1>
+            <ModeToggle />
             <div className="mt-20 flex">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-center">
+                        <CardTitle className="text-center text-primary">
                             Enter Details
                         </CardTitle>
                     </CardHeader>
@@ -130,7 +132,7 @@ function Xirr() {
                             btnText="Calculate"
                         />
 
-                        <p className="rounded-sm bg-gray-100 py-5 text-center text-xl font-semibold">
+                        <p className="rounded-sm bg-accent py-5 text-center text-xl font-semibold">
                             {(xirr * 100).toFixed(2)}%
                         </p>
                     </CardContent>
