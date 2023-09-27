@@ -22,6 +22,7 @@ import { Calculator } from "@/services/api";
 import { XirrTransaction } from "types";
 import InvestmentTable from "./InvestmentTable";
 import { useAuthContext } from "@/hooks";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function Xirr() {
     const { addInvestment, isLoading } = useAddInvestment();
@@ -98,10 +99,93 @@ function Xirr() {
             <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
                 XIRR Calculator
             </h1>
-            <div className="flex">
-                <div className="flex flex-1 flex-col gap-10 py-10">
-                    <form onSubmit={handleAdd}>
-                        <div className="flex">
+            <div className="mt-20 flex">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-center">
+                            Enter Details
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-1 flex-col gap-12 ">
+                        <FormRow
+                            onSubmit={handleAdd}
+                            inputVal={amount || ""}
+                            dateVal={date}
+                            onInputChange={(e) =>
+                                dispatch(setAmount(e.target.value))
+                            }
+                            onDateChange={(d) => dispatch(setDate(d))}
+                            isLoading={isLoading}
+                            btnText="Submit"
+                        />
+
+                        <FormRow
+                            onSubmit={calcXirr}
+                            inputVal={maturityAmount || ""}
+                            dateVal={maturityDate}
+                            onInputChange={(e) =>
+                                dispatch(setMaturityAmount(+e.target.value))
+                            }
+                            onDateChange={(d) => dispatch(setMaturityDate(d))}
+                            btnText="Calculate"
+                        />
+
+                        <p className="rounded-sm bg-gray-100 py-5 text-center text-xl font-semibold">
+                            {(xirr * 100).toFixed(2)}%
+                        </p>
+                    </CardContent>
+                </Card>
+
+                <div className="flex-1">
+                    {<InvestmentTable dates={dates} values={values} />}
+                </div>
+            </div>
+        </>
+    );
+}
+
+type FormRowProps = {
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    inputVal: string | number | "";
+    dateVal: Date | undefined;
+    onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onDateChange: (d: Date | undefined) => void;
+    btnText: string;
+    isLoading?: boolean;
+};
+
+const FormRow = ({
+    onSubmit,
+    inputVal,
+    dateVal,
+    onInputChange,
+    onDateChange,
+    btnText,
+    isLoading = false,
+}: FormRowProps) => {
+    return (
+        <form className="flex flex-col items-center gap-5" onSubmit={onSubmit}>
+            <div className="grid grid-cols-2 gap-5">
+                <Input
+                    className=""
+                    value={inputVal || ""}
+                    onChange={onInputChange}
+                    type="number"
+                    name="amount"
+                    placeholder="Amount"
+                />
+                <DatePicker date={dateVal} setDate={onDateChange} />
+            </div>
+
+            <Button disabled={isLoading}>{btnText}</Button>
+        </form>
+    );
+};
+
+export default Xirr;
+
+/*
+   <>
                             <Input
                                 value={amount || ""}
                                 onChange={(e) =>
@@ -117,34 +201,5 @@ function Xirr() {
                                 setDate={(d) => dispatch(setDate(d))}
                             />
                             <Button disabled={isLoading}>Submit</Button>
-                        </div>
-                    </form>
-                    <form onSubmit={calcXirr}>
-                        <div className="flex">
-                            <Input
-                                value={maturityAmount || ""}
-                                onChange={(e) =>
-                                    dispatch(setMaturityAmount(+e.target.value))
-                                }
-                                type="number"
-                                placeholder="Maturity Amount"
-                                name="maturityAmount"
-                            />
-                            <DatePicker
-                                date={maturityDate}
-                                setDate={(d) => dispatch(setMaturityDate(d))}
-                            />
-                            <Button>Calculate</Button>
-                        </div>
-                    </form>
-                    <p className="text-center">{(xirr * 100).toFixed(2)}%</p>
-                </div>
-                <div className="flex-1">
-                    {<InvestmentTable dates={dates} values={values} />}
-                </div>
-            </div>
-        </>
-    );
-}
-
-export default Xirr;
+                        </>
+*/
