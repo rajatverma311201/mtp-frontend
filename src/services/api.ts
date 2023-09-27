@@ -35,9 +35,8 @@ export const Calculator = {
         { amount, date }: XirrTransaction,
         jwt: string,
     ) => {
-        const body = { amount, date: date.toString() };
+        const body = { amount, date: (date as Date).getTime() };
 
-        console.log(body);
         const data = await Fetch(
             `/xirrs`,
             HTTP.POST,
@@ -49,7 +48,7 @@ export const Calculator = {
     },
 
     deleteXirrInvestment: async (date: Date, jwt: string) => {
-        const body = { date };
+        const body = { date: (date as Date).getTime() };
         const data = await Fetch(
             `/xirrs`,
             HTTP.DELETE,
