@@ -46,7 +46,7 @@ function Xirr() {
             const _values: number[] = [];
 
             data.data.forEach((item: XirrTransaction) => {
-                _dates.push(new Date(item.date));
+                _dates.push(new Date(+item.date));
                 _values.push(+item.amount);
             });
 
@@ -55,15 +55,9 @@ function Xirr() {
         }
     }, [data, jwt]);
 
-    // useEffect(() => {
-    //     console.log({ dates });
-    // }, [dates]);
-
     function handleAdd(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (date && amount) {
-            // console.log({ date, amount });
-
             if (!jwt) {
                 dispatch(setDates([...dates, date]));
                 dispatch(setValues([...values, +amount]));
@@ -104,43 +98,51 @@ function Xirr() {
             <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
                 XIRR Calculator
             </h1>
-            <form onSubmit={handleAdd}>
-                <div className="flex ">
-                    <Input
-                        value={amount || ""}
-                        onChange={(e) => dispatch(setAmount(e.target.value))}
-                        type="number"
-                        name="amount"
-                        placeholder="Amount"
-                    />
-                    <DatePicker
-                        date={date}
-                        setDate={(d) => dispatch(setDate(d))}
-                    />
+            <div className="flex">
+                <div className="flex flex-1 flex-col gap-10 py-10">
+                    <form onSubmit={handleAdd}>
+                        <div className="flex">
+                            <Input
+                                value={amount || ""}
+                                onChange={(e) =>
+                                    dispatch(setAmount(e.target.value))
+                                }
+                                type="number"
+                                name="amount"
+                                placeholder="Amount"
+                                // className="w-"
+                            />
+                            <DatePicker
+                                date={date}
+                                setDate={(d) => dispatch(setDate(d))}
+                            />
+                            <Button disabled={isLoading}>Submit</Button>
+                        </div>
+                    </form>
+                    <form onSubmit={calcXirr}>
+                        <div className="flex">
+                            <Input
+                                value={maturityAmount || ""}
+                                onChange={(e) =>
+                                    dispatch(setMaturityAmount(+e.target.value))
+                                }
+                                type="number"
+                                placeholder="Maturity Amount"
+                                name="maturityAmount"
+                            />
+                            <DatePicker
+                                date={maturityDate}
+                                setDate={(d) => dispatch(setMaturityDate(d))}
+                            />
+                            <Button>Calculate</Button>
+                        </div>
+                    </form>
+                    <p className="text-center">{(xirr * 100).toFixed(2)}%</p>
                 </div>
-
-                <Button disabled={isLoading}>Submit</Button>
-            </form>
-            <form onSubmit={calcXirr}>
-                <div className="flex">
-                    <Input
-                        value={maturityAmount || ""}
-                        onChange={(e) =>
-                            dispatch(setMaturityAmount(+e.target.value))
-                        }
-                        type="number"
-                        placeholder="Maturity Amount"
-                        name="maturityAmount"
-                    />
-                    <DatePicker
-                        date={maturityDate}
-                        setDate={(d) => dispatch(setMaturityDate(d))}
-                    />
+                <div className="flex-1">
+                    {<InvestmentTable dates={dates} values={values} />}
                 </div>
-                <Button>Calculate</Button>
-            </form>
-            {(xirr * 100).toFixed(2)}%
-            {<InvestmentTable dates={dates} values={values} />}
+            </div>
         </>
     );
 }

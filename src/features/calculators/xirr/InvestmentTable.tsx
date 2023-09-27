@@ -1,7 +1,6 @@
 import { DataTable } from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { XirrTransaction } from "types";
-import { FiEdit } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi2";
 import useDeleteInvestment from "./useDeleteInvestment";
 
@@ -37,12 +36,6 @@ const columns: ColumnDef<ExtendedXirrTransaction>[] = [
             return (
                 <>
                     <div className="flex gap-5 text-lg">
-                        <FiEdit
-                            className="cursor-pointer"
-                            onClick={() => {
-                                alert("edit");
-                            }}
-                        />
                         <HiOutlineTrash
                             disabled={payment.isDeleting}
                             className="cursor-pointer"
@@ -63,7 +56,6 @@ type InvestmentTablePropTypes = {
 function InvestmentTable({ dates, values }: InvestmentTablePropTypes) {
     const { deleteInvestment, isDeleting } = useDeleteInvestment();
 
-    // console.log(dates);
     if (dates.length == 0) {
         return null;
     }
@@ -74,7 +66,7 @@ function InvestmentTable({ dates, values }: InvestmentTablePropTypes) {
         data.push({
             isDeleting,
             action: () => deleteInvestment(dates[i]),
-            date: dates[i],
+            date: dates[i].toDateString(),
             amount: values[i],
         });
     }
