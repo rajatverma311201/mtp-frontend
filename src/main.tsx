@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <AuthContextProvider>
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
             <App />
         </ThemeProvider>
     </AuthContextProvider>,
