@@ -37,7 +37,7 @@ export default function useSignup() {
                 variant: "success",
             });
 
-            navigate("/");
+            navigate("/", { replace: true });
         },
 
         onError: ({ message }: { message: string }) => {

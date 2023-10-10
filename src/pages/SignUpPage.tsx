@@ -10,16 +10,14 @@ function SignUpPage() {
         navigate(-1);
     }
     return (
-        <div className="flex h-screen items-center justify-center px-5">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Sign Up To MTP</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <SignUpForm />
-                </CardContent>
-            </Card>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>Sign Up To MTP</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <SignUpForm />
+            </CardContent>
+        </Card>
     );
 }
 
