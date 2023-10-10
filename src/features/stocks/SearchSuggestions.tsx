@@ -1,7 +1,16 @@
-import { useState } from "react";
 import "./SearchSuggestions.css";
 
-function SearchSuggestions({ data, setStockName, stockRef }) {
+interface SearchSuggestionsProps {
+    data: { name: string }[];
+    setStockName: (x: string) => void;
+    stockRef: React.MutableRefObject<string>;
+}
+
+function SearchSuggestions({
+    data,
+    setStockName,
+    stockRef,
+}: SearchSuggestionsProps) {
     return (
         <div className="search-list">
             {data.map((item, id) => {
