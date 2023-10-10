@@ -30,7 +30,7 @@ function SipComp() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             monthlyInvestment: 1000,
-            expectedReturnRate: 1000,
+            expectedReturnRate: 10,
             years: 1,
         },
     });
@@ -68,14 +68,14 @@ function SipComp() {
                             <SipFormField
                                 form={form}
                                 name="monthlyInvestment"
-                                label="Present Value"
+                                label="Monthly Investment"
                                 description="The amount you have today."
                             />
 
                             <SipFormField
                                 form={form}
                                 name="expectedReturnRate"
-                                label="Expected Return Rate"
+                                label="Expected Return Rate %"
                                 description="The expected return rate."
                             />
 
@@ -94,10 +94,23 @@ function SipComp() {
                 </CardContent>
                 <CardFooter>
                     <div className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-10 py-4 text-center font-semibold text-accent-foreground">
-                        <span>Sip Value</span>-
-                        <span className="text-xl text-primary">
-                            {(sipValue * 100).toFixed(2)} %
-                        </span>
+                        <div className="flex flex-1 flex-col items-center">
+                            <span>Maturity Amount</span>
+                            <span className="text-xl text-primary">
+                                {sipValue.toFixed(2)}
+                            </span>
+                        </div>
+                        <div className="flex flex-1 flex-col items-center">
+                            <span>Interest </span>
+                            <span className="text-xl text-primary">
+                                {(
+                                    +sipValue.toFixed(2) -
+                                    form.getValues().monthlyInvestment *
+                                        form.getValues().years *
+                                        12
+                                ).toFixed(2)}
+                            </span>
+                        </div>
                     </div>
                 </CardFooter>
             </Card>

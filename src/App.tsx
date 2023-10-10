@@ -6,6 +6,7 @@ import {
     HomePage,
     LoginPage,
     SignUpPage,
+    SipPage,
     XirrPage,
 } from "@/pages";
 import CalculatorLayout from "@/components/layout/CalculatorLayout";
@@ -29,6 +30,7 @@ function App() {
                             <Route index element={<CalculatorsPage />} />
                             <Route path="cagr" element={<CagrPage />} />
                             <Route path="xirr" element={<XirrPage />} />
+                            <Route path="sip" element={<SipPage />} />
                         </Route>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/signup" element={<SignUpPage />} />
