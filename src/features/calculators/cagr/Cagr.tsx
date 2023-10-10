@@ -1,95 +1,156 @@
-import { useEffect, useReducer } from "react";
+import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import {
     Card,
     CardContent,
-    CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 
+import { cagrCalc } from "./cagrUtils";
+import { useForm } from "react-hook-form";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import CagrFormField from "./CagrFormField";
 
-import {
-    initialState,
-    reducer as cagrReducer,
-    reset,
-    setCagr,
-    setFutureValue,
-    setPresentValue,
-    setYears,
-    cagrCalc,
-} from "./cagrUtils";
+("use client");
+
+const formSchema = z.object({
+    presentValue: z.number().int().min(0),
+    futureValue: z.number().int().min(0),
+    years: z.number().int().min(1),
+});
 
 function CagrComp() {
-    // const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer<
-    //     Reducer<CagrState, CagrAction>
-    // >(cagrReducer, initialState);
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            presentValue: 1000,
+            futureValue: 1000,
+            years: 1,
+        },
+    });
 
-    const [{ presentValue, futureValue, years, cagr }, dispatch] = useReducer(
-        cagrReducer,
-        initialState,
+    const [cagrValue, setCagrValue] = useState(
+        cagrCalc(
+            form.getValues().presentValue,
+            form.getValues().futureValue,
+            form.getValues().years,
+        ),
     );
 
-    useEffect(() => {
-        const cagrCalculated = cagrCalc(+presentValue, +futureValue, +years);
-
-        dispatch(setCagr(cagrCalculated));
-    }, [futureValue, presentValue, years]);
+    const onSubmit = (data: z.infer<typeof formSchema>) => {
+        setCagrValue(cagrCalc(data.presentValue, data.futureValue, data.years));
+    };
 
     return (
         <div className="flex justify-center">
-            <Card className="max-w-2xl flex-1">
+            <Card>
                 <CardHeader>
-                    <CardTitle>CAGR Calculator</CardTitle>
-                    <CardDescription>
-                        Calculate the Compound Annual Growth Rate (CAGR) of an
-                        investment
-                    </CardDescription>
+                    <CardTitle className="text-center">
+                        Calculate Cagr
+                    </CardTitle>
                 </CardHeader>
-                <CardContent className="">
-                    <form
-                        onSubmit={(e) => e.preventDefault()}
-                        className="space-y-5"
-                    >
-                        <CagrFormField
-                            label="Present Value"
-                            action={(val: number) =>
-                                dispatch(setPresentValue(val))
-                            }
-                            val={presentValue}
-                        />
+                <CardContent>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-5"
+                        >
+                            <CagrFormField
+                                form={form}
+                                name="presentValue"
+                                label="Present Value"
+                                description="The amount you have today."
+                            />
 
-                        <CagrFormField
-                            label="Future Value"
-                            action={(val: number) =>
-                                dispatch(setFutureValue(val))
-                            }
-                            val={futureValue}
-                        />
+                            <FormField
+                                control={form.control}
+                                name="futureValue"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Future Value</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                placeholder=""
+                                                value={field.value}
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        parseInt(
+                                                            e.target.value,
+                                                        ),
+                                                    )
+                                                }
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            The amount you expect in future.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <CagrFormField
-                            label="Years"
-                            action={(val: number) => dispatch(setYears(val))}
-                            val={years}
-                        />
+                            <FormField
+                                control={form.control}
+                                name="years"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Years</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                placeholder=""
+                                                value={field.value}
+                                                onChange={(e) =>
+                                                    field.onChange(
+                                                        parseInt(
+                                                            e.target.value,
+                                                        ),
+                                                    )
+                                                }
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            The number of years you expect to
+                                            hold the investment.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <div className="flex items-stretch justify-between pt-5 ">
-                            <p className="flex items-center justify-center rounded-md bg-slate-900 px-10 text-white">
-                                CAGR {"  "}
-                                {(cagr * 100).toFixed(2)}%
-                            </p>
-                            <Button
-                                variant={"destructive"}
-                                onClick={() => dispatch(reset())}
-                            >
-                                Reset
-                            </Button>
-                        </div>
-                    </form>
+                            <div className="flex w-full justify-center">
+                                <Button type="submit">Submit</Button>
+                            </div>
+                        </form>
+                    </Form>
                 </CardContent>
+                <CardFooter>
+                    <div className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-10 py-4 text-center font-semibold text-accent-foreground">
+                        <span>Cagr Value</span>-
+                        <span className="text-xl text-primary">
+                            {(cagrValue * 100).toFixed(2)} %
+                        </span>
+                    </div>
+                </CardFooter>
             </Card>
         </div>
     );
