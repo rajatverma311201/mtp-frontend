@@ -1,5 +1,11 @@
 export const CALCULATORS = [
     {
+        name: "SIP",
+        path: "sip",
+        description:
+            "Calculate the expected future value of monthly SIP investments.",
+    },
+    {
         name: "CAGR",
         path: "cagr",
         description:

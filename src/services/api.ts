@@ -7,7 +7,7 @@ import {
 import Fetch from "./Fetch";
 import { HTTP } from "@/utils/constants";
 
-const BASE_URL = "http://127.0.0.1:3000/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const Auth = {
     signup: async (obj: SignUpRequest) => {
