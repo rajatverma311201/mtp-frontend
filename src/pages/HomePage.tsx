@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
     return (
-        <div className="flex gap-10">
+        <div className="flex items-start gap-10">
             {FEATURES.map((feature) => (
                 <Link
                     to={feature.path}
