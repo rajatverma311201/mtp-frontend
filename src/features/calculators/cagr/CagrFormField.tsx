@@ -1,38 +1,54 @@
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
+import {
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
 
 type CagrFormFieldProps = {
+    form: UseFormReturn<{
+        presentValue: number;
+        futureValue: number;
+        years: number;
+    }>;
     label: string;
-    val: number;
-    action: (value: number) => void;
+    name: "presentValue" | "futureValue" | "years";
+    description: string;
 };
 
-const CagrFormField = ({ label, val, action }: CagrFormFieldProps) => {
+const CagrFormField: React.FC<CagrFormFieldProps> = ({
+    form,
+    label,
+    name,
+    description,
+}) => {
     return (
-        <div className="mb-10 flex flex-col gap-8">
-            <div className="  flex items-center justify-between gap-10">
-                <Label
-                    className="text-left text-lg"
-                    htmlFor={label.split(/\s+/).join("-")}
-                >
-                    {label}
-                </Label>
-                <Input
-                    className="w-32"
-                    id={label.split(/\s+/).join("-")}
-                    type={label === "Years" ? "text" : "number"}
-                    value={val}
-                    onChange={(e) => action(+e.target.value)}
-                />
-            </div>
-            <Slider
-                value={[val]}
-                min={label === "Years" ? 1 : 1000}
-                max={label === "Years" ? 100 : 1000_000}
-                onValueChange={(val) => action(+val[0])}
-            />
-        </div>
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <Input
+                            {...field}
+                            type="number"
+                            placeholder=""
+                            value={field.value}
+                            onChange={(e) =>
+                                field.onChange(parseInt(e.target.value))
+                            }
+                        />
+                    </FormControl>
+                    <FormDescription>{description}</FormDescription>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
     );
 };
 export default CagrFormField;
