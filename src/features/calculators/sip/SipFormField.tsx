@@ -9,18 +9,18 @@ import {
 } from "@/components/ui/form";
 import { UseFormReturn } from "react-hook-form";
 
-type CagrFormFieldProps = {
+type SipFormFieldProps = {
     form: UseFormReturn<{
-        presentValue: number;
-        futureValue: number;
+        monthlyInvestment: number;
+        expectedReturnRate: number;
         years: number;
     }>;
     label: string;
-    name: "presentValue" | "futureValue" | "years";
+    name: "monthlyInvestment" | "expectedReturnRate" | "years";
     description: string;
 };
 
-const CagrFormField: React.FC<CagrFormFieldProps> = ({
+const SipFormField: React.FC<SipFormFieldProps> = ({
     form,
     label,
     name,
@@ -51,4 +51,4 @@ const CagrFormField: React.FC<CagrFormFieldProps> = ({
         />
     );
 };
-export default CagrFormField;
+export default SipFormField;
