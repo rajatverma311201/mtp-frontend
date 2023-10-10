@@ -28,7 +28,7 @@ export default function useLogin() {
                 title: "Logged In Successfully",
                 variant: "success",
             });
-            navigate("/");
+            navigate("/", { replace: true });
         },
         onError: ({ message }: { message: string }) => {
             toast({

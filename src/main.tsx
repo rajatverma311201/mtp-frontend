@@ -6,11 +6,9 @@ import AuthContextProvider from "@/contexts/AuthContextProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <AuthContextProvider>
-            <ThemeProvider defaultTheme="dark">
-                <App />
-            </ThemeProvider>
-        </AuthContextProvider>
-    </React.StrictMode>,
+    <AuthContextProvider>
+        <ThemeProvider defaultTheme="dark">
+            <App />
+        </ThemeProvider>
+    </AuthContextProvider>,
 );

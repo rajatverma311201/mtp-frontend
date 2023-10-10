@@ -1,11 +1,10 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
 export default async function Fetch(
     url: string,
     method: string,
     jwt?: string,
     body?: string,
 ) {
-    const res = await fetch(`${BASE_URL}${url}`, {
+    const res = await fetch(`${url}`, {
         method,
         headers: {
             authorization: `Bearer ${jwt}`,

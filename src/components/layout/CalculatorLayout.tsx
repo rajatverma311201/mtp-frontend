@@ -17,25 +17,24 @@ function CalculatorLayout() {
         (calculator) => !pathname.endsWith(calculator.path),
     );
     return (
-        <div>
-            <div className="flex justify-between">
-                <Link
+        <>
+            <div className="relative flex-1">
+                {/* <Link
                     to={"/calculators"}
                     className="text-left text-4xl font-bold"
                 >
                     Calculators
-                </Link>
-                <Link to={"/"} className="text-left text-4xl font-bold">
-                    Home
-                </Link>
-                {pathname !== "/calculators" && (
-                    <MoreBtn links={availableCalculators} />
-                )}
+                </Link> */}
+                <div className="absolute right-0">
+                    {pathname !== "/calculators" && (
+                        <MoreBtn links={availableCalculators} />
+                    )}
+                </div>
+                <div className="flex w-full justify-center">
+                    <Outlet />
+                </div>
             </div>
-            <main className="p-10">
-                <Outlet />
-            </main>
-        </div>
+        </>
     );
 }
 
