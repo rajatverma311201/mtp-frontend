@@ -23,7 +23,6 @@ import { XirrTransaction } from "types";
 import InvestmentTable from "./InvestmentTable";
 import { useAuthContext } from "@/hooks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ModeToggle } from "@/components/ModeToggle";
 
 function Xirr() {
     const { addInvestment, isLoading } = useAddInvestment();
@@ -97,15 +96,12 @@ function Xirr() {
 
     return (
         <>
-            <h1 className="text-3xl font-bold text-foreground sm:text-3xl md:text-4xl">
-                XIRR Calculator
-            </h1>
-            <ModeToggle />
-            <div className="mt-20 flex">
+            {/* <ModeToggle /> */}
+            <div className=" flex">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-center text-primary">
-                            Enter Details
+                            XIRR Calculator
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-1 flex-col gap-12 ">

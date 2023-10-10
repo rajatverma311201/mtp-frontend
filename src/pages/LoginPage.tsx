@@ -11,16 +11,14 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex h-screen items-center justify-center px-5">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Welcome To MTP</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <LoginForm />
-                </CardContent>
-            </Card>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>Welcome To MTP</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <LoginForm />
+            </CardContent>
+        </Card>
     );
 }
 

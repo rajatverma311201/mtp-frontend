@@ -1,11 +1,10 @@
-const BASE_URL = "http://127.0.0.1:3000/api";
 export default async function Fetch(
     url: string,
     method: string,
     jwt?: string,
     body?: string,
 ) {
-    const res = await fetch(`${BASE_URL}${url}`, {
+    const res = await fetch(`${url}`, {
         method,
         headers: {
             authorization: `Bearer ${jwt}`,
