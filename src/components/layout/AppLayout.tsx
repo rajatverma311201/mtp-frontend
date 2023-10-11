@@ -5,7 +5,7 @@ function AppLayout() {
     return (
         <div className="flex h-full">
             <Navbar />
-            <main className="flex flex-1 justify-center px-5 pt-24">
+            <main className="flex flex-1 items-start justify-center px-5 pt-24">
                 <Outlet />
             </main>
         </div>
