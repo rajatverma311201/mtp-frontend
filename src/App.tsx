@@ -6,6 +6,7 @@ import {
     HomePage,
     LoginPage,
     SignUpPage,
+    SipPage,
     StocksPage,
     XirrPage,
 } from "@/pages";
@@ -32,6 +33,7 @@ function App() {
                                 <Route index element={<CalculatorsPage />} />
                                 <Route path="cagr" element={<CagrPage />} />
                                 <Route path="xirr" element={<XirrPage />} />
+                                <Route path="sip" element={<SipPage />} />
                             </Route>
                             <Route path="stocks" element={<StocksPage />} />
 
