@@ -26,8 +26,6 @@ export default function useSignup() {
             Auth.signup({ firstName, lastName, email, password, mobile }),
 
         onSuccess: (data) => {
-            console.log(data);
-
             authCtx.setUser(data.data);
             authCtx.setJwt(data.token);
             authCtx.setJwtExpire(data.jwtExpire);
