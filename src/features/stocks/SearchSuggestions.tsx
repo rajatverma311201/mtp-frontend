@@ -1,7 +1,7 @@
 import "./SearchSuggestions.css";
 
 interface SearchSuggestionsProps {
-    data: { name: string }[];
+    data: { name: string; exchange: string }[];
     setStockName: (x: string) => void;
     stockRef: React.MutableRefObject<string>;
 }
@@ -23,7 +23,7 @@ function SearchSuggestions({
                         className="list-item dark:hover:bg-black"
                         key={id}
                     >
-                        {item.name}
+                        {item.name} ({item.exchange})
                     </div>
                 );
             })}
