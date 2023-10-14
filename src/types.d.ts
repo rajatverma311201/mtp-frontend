@@ -22,19 +22,30 @@ declare module "types" {
         date: Date | string;
     };
 
-    export type StockParams = {
-        symbol?: string;
-        exchange?: string;
-        country?: string;
-    };
-
     export type StockReferenceData = {
-        symbol: string;
-        name: string;
-        currency: string;
-        exchange: string;
-        mic_code: string;
-        country: string;
-        type: string;
+        search_id: string;
+        nse_scrip_code: string;
+        bse_scrip_code: string;
+        title: string;
     };
 }
+// {
+//     analytics_label: "DEFAULT_GLOBAL_SEARCH_FLOW";
+//     bse_scrip_code: "500180";
+//     entity_type: "Stocks";
+//     expiry: null;
+//     fund_name: null;
+//     groww_contract_id: "GSTK500180";
+//     id: "hdfc-bank-ltd";
+//     isin: "INE040A01034";
+//     nse_scrip_code: "HDFCBANK";
+//     scheme_code: null;
+//     scheme_name: null;
+//     scheme_search: null;
+//     search_id: "hdfc-bank-ltd";
+//     search_string: null;
+//     term_page_view: 379966;
+//     tiker: null;
+//     title: "HDFC Bank Ltd.";
+//     underlying_search_id: null;
+// }

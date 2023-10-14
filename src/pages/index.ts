@@ -5,4 +5,3 @@ export { default as LoginPage } from "./LoginPage";
 export { default as SignUpPage } from "./SignUpPage";
 export { default as SipPage } from "./SipPage";
 export { default as CalculatorsPage } from "./CalculatorsPage";
-export { default as StocksPage } from "./StocksPage";
