@@ -1,9 +1,4 @@
-import {
-    LoginRequest,
-    SignUpRequest,
-    XirrTransaction,
-    StockParams,
-} from "types";
+import { LoginRequest, SignUpRequest, XirrTransaction } from "types";
 import Fetch from "./Fetch";
 import { HTTP } from "@/utils/constants";
 
@@ -64,20 +59,5 @@ export const Calculator = {
         );
 
         return data;
-    },
-};
-
-export const Stocks = {
-    getStockList: async (params: StockParams) => {
-        const paramString = new URLSearchParams(params);
-
-        const data = await Fetch(
-            `https://api.twelvedata.com/stocks?${paramString}`,
-            HTTP.GET,
-        );
-
-        console.log(data);
-
-        // return data;
     },
 };

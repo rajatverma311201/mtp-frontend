@@ -7,13 +7,14 @@ import {
     LoginPage,
     SignUpPage,
     SipPage,
-    StocksPage,
     XirrPage,
 } from "@/pages";
 import CalculatorLayout from "@/components/layout/CalculatorLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "./components/ui/toaster";
 import AppLayout from "./components/layout/AppLayout";
+import StocksOverviewPage from "./pages/StocksOverviewPage";
+import StockDetailPage from "./pages/StockDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -35,7 +36,13 @@ function App() {
                                 <Route path="xirr" element={<XirrPage />} />
                                 <Route path="sip" element={<SipPage />} />
                             </Route>
-                            <Route path="stocks" element={<StocksPage />} />
+                            <Route path="stocks">
+                                <Route index element={<StocksOverviewPage />} />
+                                <Route
+                                    path=":searchId"
+                                    element={<StockDetailPage />}
+                                />
+                            </Route>
 
                             <Route path="login" element={<LoginPage />} />
                             <Route path="signup" element={<SignUpPage />} />

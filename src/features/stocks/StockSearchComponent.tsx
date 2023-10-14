@@ -1,76 +1,94 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import SearchSuggestions from "./SearchSuggestions";
-import "./StockSearchComponent.css";
 import { StockReferenceData } from "types";
+import { useNavigate } from "react-router-dom";
 
 function StockSearchComponent() {
-    const [stockName, setStockName] = useState("");
-    const stockRef = useRef("");
-    const [data, setData] = useState([]);
-    const [openSearchList, setOpenSearchList] = useState(false);
+    const [size, setSize] = useState("0fr");
+    const [searchText, setSearchText] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const navigate = useNavigate();
+
+    const formRef = useRef<HTMLDivElement>();
+    const inputRef = useRef<HTMLInputElement>();
 
     useEffect(() => {
-        if (data.length == 0) {
-            if (openSearchList) setOpenSearchList(false);
-        } else {
-            if (!openSearchList) setOpenSearchList(true);
-        }
-    }, [data, openSearchList]);
+        const timeout = setTimeout(async () => {
+            const res = await fetch(
+                `http://127.0.0.1:3000/api/stocks?q=${searchText}`,
+            );
 
-    useEffect(() => {
-        if (!stockName || stockName == stockRef.current) return setData([]);
-        const timer = setTimeout(() => {
-            fetch(`https://api.twelvedata.com/stocks?country=india`)
-                .then((res) => res.json())
-                .then((json) => {
-                    console.log(json.data.length);
-                    const _data = json.data.filter(
-                        (item: StockReferenceData) => {
-                            return item.name.toLowerCase().includes(stockName);
-                        },
-                    );
-
-                    setData(_data.slice(0, Math.min(_data.length, 7)));
-                    console.log(_data);
-                });
+            const searchRes = await res.json();
+            if (!res.ok) {
+                console.log(searchRes.message);
+            } else {
+                console.log(searchRes.content);
+                setSuggestions(searchRes.content);
+            }
         }, 500);
 
-        return () => clearTimeout(timer);
-    }, [stockName]);
+        return () => clearTimeout(timeout);
+    }, [searchText]);
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (!formRef.current?.contains(e.target as Node)) {
+                setSize("0fr");
+            }
+        };
+
+        document.addEventListener("mousedown", handler, { capture: true });
+        return () =>
+            document.removeEventListener("mousedown", handler, {
+                capture: true,
+            });
+    }, []);
+
+    function handleSubmit(
+        e:
+            | React.MouseEvent<HTMLDivElement, MouseEvent>
+            | React.FormEvent<HTMLFormElement>,
+        item?: StockReferenceData,
+    ) {
         e.preventDefault();
-        console.log(stockName);
+        console.log(item);
+        navigate(`/stocks/${item?.search_id}`);
     }
 
     return (
-        <>
+        <div className="flex flex-1">
             <form
-                className="flex w-1/3 justify-center gap-2"
-                onSubmit={(e) => handleSubmit(e)}
+                onSubmit={(e) => handleSubmit(e, suggestions[0])}
+                className="flex flex-1 justify-center gap-3"
             >
-                <div className="search-container">
+                <div
+                    ref={formRef as MutableRefObject<HTMLDivElement>}
+                    className="relative flex w-1/3 flex-col gap-2"
+                >
                     <Input
-                        className="rounded-full dark:bg-gray-700"
+                        ref={inputRef as MutableRefObject<HTMLInputElement>}
+                        onFocus={() => setSize("1fr")}
                         placeholder="Search..."
-                        value={stockName}
-                        onChange={(e) => setStockName(e.target.value)}
+                        value={searchText}
+                        onChange={(e) => {
+                            setSearchText(e.target.value);
+                            size == "0fr" && setSize("1fr");
+                        }}
                     />
-
-                    {openSearchList && (
-                        <SearchSuggestions
-                            stockRef={stockRef}
-                            setStockName={setStockName}
-                            data={data}
-                        />
-                    )}
+                    <SearchSuggestions
+                        inputRef={
+                            inputRef as MutableRefObject<HTMLInputElement>
+                        }
+                        size={size}
+                        suggestions={suggestions}
+                        setSearchText={setSearchText}
+                        setSize={setSize}
+                        handleSubmit={handleSubmit}
+                    />
                 </div>
-
-                <Button className="rounded-full">Search</Button>
             </form>
-        </>
+        </div>
     );
 }
 
