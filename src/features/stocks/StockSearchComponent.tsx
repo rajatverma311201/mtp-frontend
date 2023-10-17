@@ -3,33 +3,30 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import SearchSuggestions from "./SearchSuggestions";
 import { StockReferenceData } from "types";
 import { useNavigate } from "react-router-dom";
+import { Stocks } from "@/services/api";
+import { useQuery } from "@tanstack/react-query";
 
 function StockSearchComponent() {
     const [size, setSize] = useState("0fr");
     const [searchText, setSearchText] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
     const navigate = useNavigate();
 
     const formRef = useRef<HTMLDivElement>();
     const inputRef = useRef<HTMLInputElement>();
 
+    const { data: suggestions, refetch: fetchStocks } = useQuery({
+        queryKey: ["fetch-stocks"],
+        queryFn: () => Stocks.getStocks(searchText),
+        enabled: false,
+    });
+
     useEffect(() => {
         const timeout = setTimeout(async () => {
-            const res = await fetch(
-                `http://127.0.0.1:3000/api/stocks?q=${searchText}`,
-            );
-
-            const searchRes = await res.json();
-            if (!res.ok) {
-                console.log(searchRes.message);
-            } else {
-                console.log(searchRes.content);
-                setSuggestions(searchRes.content);
-            }
+            fetchStocks();
         }, 500);
 
         return () => clearTimeout(timeout);
-    }, [searchText]);
+    }, [fetchStocks, searchText]);
 
     useEffect(() => {
         const handler = (e: MouseEvent) => {
@@ -52,7 +49,6 @@ function StockSearchComponent() {
         item?: StockReferenceData,
     ) {
         e.preventDefault();
-        console.log(item);
         navigate(`/stocks/${item?.search_id}`);
     }
 
@@ -81,7 +77,7 @@ function StockSearchComponent() {
                             inputRef as MutableRefObject<HTMLInputElement>
                         }
                         size={size}
-                        suggestions={suggestions}
+                        suggestions={suggestions || []}
                         setSearchText={setSearchText}
                         setSize={setSize}
                         handleSubmit={handleSubmit}

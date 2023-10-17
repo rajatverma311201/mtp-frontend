@@ -61,3 +61,51 @@ export const Calculator = {
         return data;
     },
 };
+
+export const Stocks = {
+    getStocks: async (searchText: string) => {
+        // const res = await fetch(
+        //     `http://127.0.0.1:3000/api/stocks?q=${searchText}`,
+        // );
+
+        // const searchRes = await res.json();
+
+        // if (!res.ok) {
+        //     return [];
+        // } else {
+        //     return searchRes.content;
+        // }
+
+        const searchRes = await Fetch(
+            `http://127.0.0.1:3000/api/stocks?q=${searchText}`,
+            HTTP.GET,
+        );
+
+        return searchRes.content;
+    },
+
+    getStockDetails: async (searchId: string) => {
+        const searchRes = await Fetch(
+            `http://127.0.0.1:3000/api/stocks/${searchId}`,
+            HTTP.GET,
+        );
+        return searchRes;
+    },
+
+    getStockChartData: async (
+        exchange: string,
+        scriptCode: string,
+        duration: string,
+        interval: string,
+    ) => {
+        const searchRes = await Fetch(
+            `http://127.0.0.1:3000/api/stocks/${exchange}/${scriptCode}/${duration}?` +
+                new URLSearchParams({
+                    interval: interval,
+                }),
+            HTTP.GET,
+        );
+
+        return searchRes;
+    },
+};
