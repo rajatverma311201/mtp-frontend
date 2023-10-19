@@ -77,7 +77,7 @@ export const Stocks = {
         // }
 
         const searchRes = await Fetch(
-            `http://127.0.0.1:3000/api/stocks?q=${searchText}`,
+            `${BASE_URL}/stocks?q=${searchText}`,
             HTTP.GET,
         );
 
@@ -86,7 +86,7 @@ export const Stocks = {
 
     getStockDetails: async (searchId: string) => {
         const searchRes = await Fetch(
-            `http://127.0.0.1:3000/api/stocks/${searchId}`,
+            `${BASE_URL}/stocks/${searchId}`,
             HTTP.GET,
         );
         return searchRes;
@@ -99,7 +99,7 @@ export const Stocks = {
         interval: string,
     ) => {
         const searchRes = await Fetch(
-            `http://127.0.0.1:3000/api/stocks/${exchange}/${scriptCode}/${duration}?` +
+            `${BASE_URL}/stocks/${exchange}/${scriptCode}/${duration}?` +
                 new URLSearchParams({
                     interval: interval,
                 }),
