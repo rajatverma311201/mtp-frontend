@@ -26,7 +26,9 @@ function StockChart({
     });
 
     if (isLoading) {
-        return <Loader2 className="h-10 w-10 text-primary" />;
+        return (
+            <Loader2 className="h-14 w-14 animate-spin pt-20 text-primary" />
+        );
     }
 
     const candles = chartData.data.candles || [];
